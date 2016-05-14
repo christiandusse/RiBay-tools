@@ -2,6 +2,7 @@ package com.ribay.tools.tool;
 
 import com.basho.riak.client.api.commands.kv.ListKeys;
 import com.basho.riak.client.api.commands.kv.UpdateValue;
+import com.basho.riak.client.core.RiakFuture;
 import com.basho.riak.client.core.query.Location;
 import com.basho.riak.client.core.query.Namespace;
 import com.ribay.tools.db.MyRiakClient;
@@ -25,6 +26,10 @@ public class JobUtil {
     private MyRiakClient client;
 
     public void updateOnAll(String bucket, int idxStart, int idxEnd, UpdateValue.Update<?> update) throws Exception {
+        updateOnAll(bucket, idxStart, idxEnd, update, false);
+    }
+
+    public void updateOnAll(String bucket, int idxStart, int idxEnd, UpdateValue.Update<?> update, boolean async) throws Exception {
         Namespace namespace = new Namespace(bucket);
         ListKeys lk = new ListKeys.Builder(namespace).build();
         ListKeys.Response lkResp = client.execute(lk);
@@ -44,7 +49,10 @@ public class JobUtil {
                 Location location = new Location(namespace, key);
 
                 UpdateValue command = new UpdateValue.Builder(location).withUpdate(update).build();
-                client.execute(command);
+                RiakFuture<UpdateValue.Response, Location> future = client.executeAsync(command);
+                if (!async) {
+                    future.await();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

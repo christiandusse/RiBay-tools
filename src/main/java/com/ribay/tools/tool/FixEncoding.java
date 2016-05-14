@@ -25,7 +25,7 @@ public class FixEncoding extends UpdateValue.Update<Article> implements CommandM
                       @CliOption(key = {"start"}, mandatory = true, help = "The index where to start") final int idxStart, //
                       @CliOption(key = {"end"}, mandatory = true, help = "The index where to end") final int idxEnd) throws Exception {
 
-        util.updateOnAll(bucket, idxStart, idxEnd, this);
+        util.updateOnAll(bucket, idxStart, idxEnd, this, true);
     }
 
     @Override
