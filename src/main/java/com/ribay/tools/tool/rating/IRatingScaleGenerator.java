@@ -15,11 +15,15 @@ public interface IRatingScaleGenerator {
      * @param nofRatings
      * @param mediumScore
      */
-    public Number[] generateRatingScale(int nofRatings, double mediumScore) throws NotSolvableException;
+    public Number[] generateRatingScale(int nofRatings, double mediumScore) throws NotFeasibleException, Exception;
 
-    public static class NotSolvableException extends Exception {
+    public static class NotFeasibleException extends Exception {
 
-        public NotSolvableException(Throwable cause) {
+        public NotFeasibleException() {
+            super();
+        }
+
+        public NotFeasibleException(Throwable cause) {
             super(cause);
         }
 

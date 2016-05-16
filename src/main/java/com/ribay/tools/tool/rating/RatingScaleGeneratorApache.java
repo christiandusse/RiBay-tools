@@ -14,7 +14,7 @@ import java.util.Collection;
  */
 public class RatingScaleGeneratorApache extends AbstractRatingScaleGenerator {
 
-    public Number[] generateRatingScale(int nofRatings, double mediumScore) {
+    public Number[] generateRatingScale(int nofRatings, double mediumScore) throws NotFeasibleException {
 
         // This does not solve integer problems - can only solve problems with real numbers as solution
 
