@@ -6,6 +6,8 @@ import com.basho.riak.client.core.FutureOperation;
 import com.basho.riak.client.core.RiakCluster;
 import com.basho.riak.client.core.RiakFuture;
 import com.basho.riak.client.core.RiakNode;
+import io.netty.channel.ThreadPerChannelEventLoopGroup;
+import io.netty.channel.oio.OioEventLoopGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -38,6 +40,8 @@ public class MyRiakClient {
         List<RiakNode> nodes = new ArrayList<>();
         for (String ip : ips) {
             RiakNode node = new RiakNode.Builder().withRemoteAddress(ip).withRemotePort(8087)
+                    .withMaxConnections(100)
+                    .withMinConnections(20)
                     .build();
             nodes.add(node);
         }

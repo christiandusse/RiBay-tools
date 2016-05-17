@@ -26,7 +26,9 @@ public class FetchAndStoreImageURLs extends UpdateValue.Update<Article> implemen
     @CliCommand(value = "fetchAndStoreImageURLs", help = "Fetches image urls for all movies and stores them as an additional property")
     public void start(@CliOption(key = {"bucket"}, mandatory = true, help = "The name of the bucket") final String bucket, //
                       @CliOption(key = {"start"}, mandatory = true, help = "The index where to start") final int idxStart, //
-                      @CliOption(key = {"end"}, mandatory = true, help = "The index where to end") final int idxEnd) throws Exception {
+                      @CliOption(key = {"end"}, mandatory = true, help = "The index where to end") final int idxEnd, //
+                      @CliOption(key = {"targetBucket"}, mandatory = true, help = "The name of the bucket to store the images to") final String targetBucket) throws Exception {
+
 
         util.updateOnAll(bucket, idxStart, idxEnd, this);
     }

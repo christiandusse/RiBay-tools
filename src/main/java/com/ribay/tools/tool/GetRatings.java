@@ -30,7 +30,7 @@ public class GetRatings extends UpdateValue.Update<Article> implements CommandMa
 
     @PostConstruct
     private void init() throws Exception {
-        writer = new BufferedWriter(new FileWriter("data/ratings", true));
+        writer = new BufferedWriter(new FileWriter("data/ratings.csv", true));
     }
 
     @PreDestroy
@@ -51,8 +51,9 @@ public class GetRatings extends UpdateValue.Update<Article> implements CommandMa
         try {
             double mediumRating = original.getRating();
             int nofVotes = original.getVotes();
+            String id = original.getId();
 
-            writeToFile(mediumRating, nofVotes);
+            writeToFile(id, mediumRating, nofVotes);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,8 +62,8 @@ public class GetRatings extends UpdateValue.Update<Article> implements CommandMa
         return original;
     }
 
-    private void writeToFile(double mediumRating, int nofVotes) throws Exception {
-        String line = String.format("%f,%d", mediumRating, nofVotes);
+    private void writeToFile(String id, double mediumRating, int nofVotes) throws Exception {
+        String line = String.format("%s,%f,%d",id, mediumRating, nofVotes);
 
         synchronized (lock) {
             writer.write(line);

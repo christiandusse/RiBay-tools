@@ -53,6 +53,10 @@ public class JobUtil {
                 if (!async) {
                     future.await();
                 }
+                else
+                {
+                    Thread.sleep(10);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
