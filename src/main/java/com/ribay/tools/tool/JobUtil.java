@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Future;
 
 /**
  * Created by CD on 04.05.2016.
@@ -52,9 +53,7 @@ public class JobUtil {
                 RiakFuture<UpdateValue.Response, Location> future = client.executeAsync(command);
                 if (!async) {
                     future.await();
-                }
-                else
-                {
+                } else {
                     Thread.sleep(10);
                 }
             }
@@ -62,6 +61,35 @@ public class JobUtil {
             e.printStackTrace();
             System.err.println("ended with idx: " + idx);
         }
+    }
+
+    public void forAllKeys(String bucket, int idxStart, int idxEnd, OperationForKey operation) throws Exception {
+        Namespace namespace = new Namespace(bucket);
+        ListKeys lk = new ListKeys.Builder(namespace).build();
+        ListKeys.Response lkResp = client.execute(lk);
+
+        List<String> keys = new ArrayList<>();
+        for (Location location : lkResp) {
+            keys.add(location.getKeyAsString());
+        }
+        Collections.sort(keys);
+
+        int idx = -1;
+        try {
+            for (idx = idxStart; (idx < keys.size()) && (idx < idxEnd); idx++) {
+                System.out.println(idx);
+
+                String key = keys.get(idx);
+                operation.perform(key);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("ended with idx: " + idx);
+        }
+    }
+
+    public interface OperationForKey {
+        public void perform(String key);
     }
 
 }

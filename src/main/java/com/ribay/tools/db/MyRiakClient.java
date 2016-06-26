@@ -40,8 +40,10 @@ public class MyRiakClient {
         List<RiakNode> nodes = new ArrayList<>();
         for (String ip : ips) {
             RiakNode node = new RiakNode.Builder().withRemoteAddress(ip).withRemotePort(8087)
-                    .withMaxConnections(100)
-                    .withMinConnections(20)
+                    //.withMinConnections(20)
+                    //.withMaxConnections(100)
+                    //.withBlockOnMaxConnections(true)
+                    // .withConnectionTimeout(60000)
                     .build();
             nodes.add(node);
         }

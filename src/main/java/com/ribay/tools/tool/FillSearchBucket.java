@@ -59,13 +59,12 @@ public class FillSearchBucket extends UpdateValue.Update<Article> implements Com
             if (original.getActors() != null) {
                 mu.update("genre", createFor(original.getGenre()));
             }
-            mu.update("price", new RegisterUpdate("1349")); // TODO price
             if (original.getImageId() != null) {
                 mu.update("image", new RegisterUpdate(original.getImageId()));
             }
-            mu.update("votes", new CounterUpdate(original.getVotes()));
-            mu.update("sumRatings", new CounterUpdate(Math.round(original.getVotes() * original.getRating())));
             mu.update("isMovie", new FlagUpdate(original.isMovie()));
+
+            // fill dynamic data with other job because the dynamic data is redundant in another bucket, too
 
             UpdateMap update = new UpdateMap.Builder(location, mu).build();
             client.execute(update);
